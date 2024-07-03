@@ -25,19 +25,26 @@ function showSuggestions(results, inputVal) {
 		results.forEach((result) => {
 			if (result.toLowerCase().includes(inputVal)) {
 				const list = document.createElement('li');
+				list.addEventListener('mouseover', highlightSuggestion);
+				list.addEventListener('mouseout', unHighlightSuggestion);
 				list.textContent = result;
 				suggestions.appendChild(list);
 				resultContainer.appendChild(suggestions);
 			}
 		})
+		if (inputVal === '') {
+			suggestions.style.display = 'none';
+		}
 }
 
 function highlightSuggestion(e) {
-	// Reset the background color of all suggestions
-	suggestions.querySelectorAll('li').forEach(item => item.style.backgroundColor = ''
-	);
-  // Highlight the current suggestion
-	e.target.style.backgroundColor = 'grey';
+	const listItem = e.target;
+	listItem.classList.add('highlight');
+}
+
+function unHighlightSuggestion(e) {
+	const listItem = e.target;
+	listItem.classList.remove('highlight');
 }
 
 function useSuggestion(e) {
@@ -45,5 +52,4 @@ function useSuggestion(e) {
 }
 
 input.addEventListener('keyup', searchHandler);
-suggestions.addEventListener('mouseover', highlightSuggestion);
 suggestions.addEventListener('click', useSuggestion);
